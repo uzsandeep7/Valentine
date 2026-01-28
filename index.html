@@ -4,330 +4,159 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valentine?</title>
-  <style>
-    :root { --bg1:#ffdde1; --bg2:#ee9ca7; --card:rgba(255,255,255,0.88); }
 
-    * { box-sizing: border-box; }
+  <style>
     body{
       margin:0;
       min-height:100vh;
       display:flex;
-      align-items:center;
       justify-content:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+      align-items:center;
+      background: linear-gradient(135deg,#ffdde1,#ee9ca7);
+      font-family: system-ui, sans-serif;
       overflow:hidden;
     }
 
     .card{
-      width:min(620px, 94vw);
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      border-radius: 26px;
-      padding: 26px 20px 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      background:white;
+      padding:25px;
+      border-radius:22px;
       text-align:center;
-      position: relative;
+      width:90%;
+      max-width:500px;
+      box-shadow:0 20px 50px rgba(0,0,0,.2);
+      position:relative;
     }
 
-    h1{ margin: 6px 0 8px; font-size: clamp(24px, 4.3vw, 40px); }
-    p{ margin: 0 0 14px; opacity: 0.9; }
+    h1{
+      margin:10px 0;
+      font-size:26px;
+    }
 
-    /* Image placeholder */
-    .photoWrap{
-      width: 100%;
-      display:flex;
-      justify-content:center;
-      margin: 10px 0 14px;
-    }
-    .photoBox{
-      width: min(420px, 92%);
-      aspect-ratio: 16/9;
-      border-radius: 18px;
-      border: 2px dashed rgba(0,0,0,0.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      background: rgba(255,255,255,0.55);
-      position: relative;
-    }
-    .photoBox span{
-      font-weight: 700;
-      opacity: 0.65;
-      padding: 0 12px;
-      line-height: 1.35;
-    }
-    .photoBox img{
+    img{
       width:100%;
-      height:100%;
-      object-fit: cover;
-      display:none;
-    }
-    .photoBox input{
-      position:absolute;
-      inset:0;
-      opacity:0;
-      cursor:pointer;
+      max-height:250px;
+      object-fit:cover;
+      border-radius:15px;
+      margin:10px 0;
     }
 
-    /* Buttons area */
     .buttons{
-      display:flex;
-      gap:14px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 10px;
-      position: relative;
-      height: 96px; /* fixed height so moving No stays inside */
+      position:relative;
+      height:90px;
+      margin-top:15px;
     }
 
     button{
+      padding:12px 22px;
       border:none;
+      border-radius:999px;
+      font-size:18px;
+      font-weight:bold;
       cursor:pointer;
-      border-radius: 999px;
-      padding: 14px 24px;
-      font-size: 18px;
-      font-weight: 800;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.2s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      z-index: 2;
-    }
-
-    #yesBtn{
-      background:#ff2f63;
-      color:white;
-      z-index: 10; /* always above No */
-    }
-    #yesBtn:hover{ transform: translateY(-1px); }
-    #yesBtn:active{ transform: scale(0.98); }
-
-    /* No button will move, but NEVER cover Yes */
-    #noBtn{
-      background:white;
-      color:#333;
       position:absolute;
-      left: 75%;
-      top: 50%;
-      transform: translate(-50%, -50%) scale(1);
-      z-index: 1; /* below Yes */
-      pointer-events: auto;
-    }
-    #noBtn:active{ transform: translate(-50%, -50%) scale(0.98); }
-
-    .hidden{ display:none !important; }
-
-    #result{
-      margin-top: 8px;
-    }
-    .bigLove{
-      font-size: clamp(26px, 4.6vw, 46px);
-      margin-top: 10px;
-      font-weight: 950;
-      color: #ff1f5d;
-      letter-spacing: 0.2px;
-    }
-    .subLove{
-      margin-top: 8px;
-      font-size: clamp(16px, 2.8vw, 20px);
-      font-weight: 800;
-      opacity: 0.9;
+      transition:0.15s;
     }
 
-    /* Falling roses/hearts */
-    .rainLayer{
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 9999;
+    #yes{
+      background:#ff3366;
+      color:white;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      z-index:10;
     }
-    .fall{
-      position: absolute;
-      top: -10vh;
-      will-change: transform;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: 1;
-      opacity: 0.95;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.12));
+
+    #no{
+      background:#eee;
+      left:75%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      z-index:1;
     }
+
+    .hidden{ display:none; }
+
+    .love{
+      font-size:30px;
+      color:#ff3366;
+      font-weight:900;
+      margin-top:10px;
+    }
+
+    /* Falling hearts & roses */
+    .rain{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:999;
+    }
+
+    .drop{
+      position:absolute;
+      top:-50px;
+      font-size:24px;
+      animation:fall linear forwards;
+    }
+
     @keyframes fall{
-      to { transform: translate(var(--dx), 120vh) rotate(var(--rot)); }
-    }
-
-    .hint{
-      font-size: 13px;
-      opacity: 0.68;
-      margin-top: 10px;
+      to{ transform:translateY(120vh); }
     }
   </style>
 </head>
 <body>
+
   <div class="card">
-    <h1 id="question">Will you be my Valentine, Mrs. Swoechchhya? 💘</h1>
-    <p id="sub">Choose wisely 😄</p>
+    <h1>Will you be my Valentine, Mrs. Swoechchhya? 💘</h1>
 
-    <!-- Image placeholder (optional) -->
-    <div class="photoWrap">
-      <div class="photoBox" title="Click to add an image (optional)">
-        <img id="photoPreview" alt="Your image preview" />
-        <span id="photoText">📷 Click here to add an image (optional)</span>
-        <input id="photoInput" type="file" accept="image/*" />
-      </div>
-    </div>
+    <img src="photo.jpg" alt="Our photo">
 
-    <div class="buttons" id="btnWrap">
-      <button id="yesBtn">Yes 💖</button>
-      <button id="noBtn" aria-label="No">No 🙃</button>
+    <div class="buttons" id="btns">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 🙃</button>
     </div>
 
     <div id="result" class="hidden">
-      <div class="bigLove">I love you 3000 vur 💖</div>
-      <div class="subLove">❤️💗💓💞💕💘</div>
-      <p class="hint">Now screenshot this and send it back 😌</p>
+      <div class="love">I love you 3000 vur ❤️</div>
+      <div>💖💗💓💞💕💘</div>
     </div>
   </div>
 
-  <div class="rainLayer" id="rainLayer"></div>
+  <div class="rain" id="rain"></div>
 
-  <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const btnWrap = document.getElementById("btnWrap");
-    const result = document.getElementById("result");
-    const question = document.getElementById("question");
-    const sub = document.getElementById("sub");
-    const rainLayer = document.getElementById("rainLayer");
+<script>
+  const yes = document.getElementById("yes");
+  const no = document.getElementById("no");
+  const result = document.getElementById("result");
+  const rain = document.getElementById("rain");
 
-    const photoInput = document.getElementById("photoInput");
-    const photoPreview = document.getElementById("photoPreview");
-    const photoText = document.getElementById("photoText");
+  function moveNo(){
+    const x = Math.random()*60 + 20;
+    const y = Math.random()*60 + 20;
+    no.style.left = x + "%";
+    no.style.top  = y + "%";
+    no.style.transform = "translate(-50%,-50%) scale(1.2)";
+  }
 
-    // Image preview (optional)
-    photoInput.addEventListener("change", () => {
-      const file = photoInput.files?.[0];
-      if (!file) return;
-      const url = URL.createObjectURL(file);
-      photoPreview.src = url;
-      photoPreview.style.display = "block";
-      photoText.style.display = "none";
-    });
+  no.addEventListener("mouseenter", moveNo);
+  no.addEventListener("click", moveNo);
+  no.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
-    let noScale = 1;
-    let tries = 0;
+  yes.addEventListener("click", () => {
+    document.getElementById("btns").classList.add("hidden");
+    result.classList.remove("hidden");
 
-    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-
-    function moveNoButton() {
-      tries++;
-
-      // Make No get bigger each attempt
-      noScale = clamp(noScale + 0.18, 1, 3.2);
-      noBtn.style.transform = `translate(-50%, -50%) scale(${noScale})`;
-
-      // Keep No inside wrapper, but also keep it away from the Yes button area
-      const wrapRect = btnWrap.getBoundingClientRect();
-      const yesRect = yesBtn.getBoundingClientRect();
-
-      // Random point within wrapper
-      const safePadding = 10;
-
-      // Compute a random position and retry a few times if it overlaps Yes area
-      for (let i = 0; i < 12; i++) {
-        const x = safePadding + Math.random() * (wrapRect.width - safePadding*2);
-        const y = safePadding + Math.random() * (wrapRect.height - safePadding*2);
-
-        // Convert to page coords for overlap test
-        const candidate = {
-          left: wrapRect.left + x - 40,
-          top: wrapRect.top + y - 20,
-          right: wrapRect.left + x + 40,
-          bottom: wrapRect.top + y + 20
-        };
-
-        const overlapsYes =
-          !(candidate.right < yesRect.left ||
-            candidate.left > yesRect.right ||
-            candidate.bottom < yesRect.top ||
-            candidate.top > yesRect.bottom);
-
-        if (!overlapsYes) {
-          noBtn.style.left = `${x}px`;
-          noBtn.style.top  = `${y}px`;
-          break;
-        }
-      }
-
-      if (tries === 6) sub.textContent = "Hint: the right answer is the cute one 😌";
-      if (tries === 10) sub.textContent = "Okay okay… just press YES 😂";
+    for(let i=0;i<120;i++){
+      const d=document.createElement("div");
+      d.className="drop";
+      d.innerText=Math.random()>.5?"🌹":"❤️";
+      d.style.left=Math.random()*100+"vw";
+      d.style.animationDuration=2+Math.random()*3+"s";
+      rain.appendChild(d);
+      d.addEventListener("animationend",()=>d.remove());
     }
+  });
+</script>
 
-    // Desktop hover + mobile touch makes No run
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
-    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
-
-    // Start position (within wrapper coordinate system)
-    window.addEventListener("load", () => {
-      noBtn.style.left = "76%";
-      noBtn.style.top = "50%";
-    });
-
-    // Roses + hearts rain
-    function rain(symbols, count = 80, durationMs = 3500) {
-      // clear old
-      rainLayer.innerHTML = "";
-
-      const w = window.innerWidth;
-
-      for (let i = 0; i < count; i++) {
-        const el = document.createElement("div");
-        el.className = "fall";
-        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-
-        const size = 16 + Math.random() * 22;   // px
-        const left = Math.random() * w;         // px
-        const delay = Math.random() * 0.6;      // s
-        const seconds = 2.2 + Math.random() * 2.2;
-
-        const dx = (Math.random() * 160 - 80) + "px";
-        const rot = (Math.random() * 720 - 360) + "deg";
-
-        el.style.left = left + "px";
-        el.style.fontSize = size + "px";
-        el.style.setProperty("--dx", dx);
-        el.style.setProperty("--rot", rot);
-        el.style.animationDuration = seconds + "s";
-        el.style.animationDelay = delay + "s";
-
-        rainLayer.appendChild(el);
-
-        // cleanup per element
-        el.addEventListener("animationend", () => el.remove());
-      }
-
-      // hard cleanup after duration
-      setTimeout(() => { rainLayer.innerHTML = ""; }, durationMs);
-    }
-
-    yesBtn.addEventListener("click", () => {
-      btnWrap.classList.add("hidden");
-      result.classList.remove("hidden");
-
-      question.textContent = "YAYYYYY! 🥰🌹";
-      sub.textContent = "";
-
-      // Lots of roses raining + hearts
-      rain(["🌹","🌹","🌹","💖","💗","💘","💕","❤️"], 120, 5000);
-
-      // Extra burst after a moment
-      setTimeout(() => rain(["🌹","💖","💘","💕","❤️"], 90, 4200), 900);
-    });
-  </script>
 </body>
 </html>
